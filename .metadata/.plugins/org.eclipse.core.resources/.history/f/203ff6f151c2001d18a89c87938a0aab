@@ -1,0 +1,53 @@
+package javasweeftsecondsteptasks.tasks;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class First {
+	
+	/* პრობლება:
+	გვაქვს მთელი რიცხვების ჩამონათვალი სადაც  ერთის გარდა ყველა რიცხვი  მეორდება, 
+	იპოვეთ ის რიცხვი რომელიც არ მეორდება.int singleNumber(int[] nums)
+	*/
+	
+	/* გადაწყვეტა:
+	შევქმნით HashMap-ს, რომელსაც key და value ექნება ორივე ინტეჯერი. key-ში ჩაიწერება მასივიდან ამოღებული რიცხვი,
+	ხოლო value დაითვლის თუ რამდენჯერ მოხდა ამ ციფრის ჩაწერა. მოგეხსენებათ Hashmap არ გვაძლევს key-ს გამეორების 
+	საშუალებას, შესაბამისად დავაბრუნებთ იმ რიცხვს, რომლის value-ც იქნება 1, ანუ 1-ხელ მოხდება HashMap-ში ჩაწერა.
+	შესაბამისად ეს რიცხვი იქნება უნიკალური.
+	*/
+	
+	
+	public static int singleNumber(int[] nums) {
+		
+		// შევქმენით HashMap
+	    Map<Integer, Integer> frequency = new HashMap<>();
+	    
+	    // ვითვლით რიცხვების მოხვედრის სიხშირეს frequency HashMap-ში.
+	    for (int num : nums) {
+	        frequency.put(num, frequency.getOrDefault(num, 0) + 1);
+	    }
+	    
+	    // ვეძებთ რიცხვს, რომლის HashMap-ში მოხვედრის სიხშირე 1-ის ტოლია, ანუ უნიკალურია. 
+	    for (Map.Entry<Integer, Integer> entry : frequency.entrySet()) {
+	        if (entry.getValue() == 1) {
+	            return entry.getKey();
+	        }
+	    }
+	    
+	    // იმ შემთხვევაში თუ მასივში უნიკალური ციფრი/რიცხვი არ იქნება, გავისვრით IllegalArgumentException-ს;
+	    throw new IllegalArgumentException("მასივში უნიკალური ციფრი/რიცხვი არ მოიძება.");
+	
+	}
+	
+	
+	public static void main(String[] args) {
+		
+		
+		int[] nums = {5, 4, 3, 2, 1};
+		
+		System.out.println(singleNumber(nums));
+		
+	}
+
+}

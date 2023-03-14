@@ -1,0 +1,17 @@
+package javasweeftsecondsteptasks.tasks;
+
+public class First {
+	
+	// პრობლება:
+	// გვაქვს მთელი რიცხვების ჩამონათვალი სადაც  ერთის გარდა ყველა რიცხვი  მეორდება, 
+	// იპოვეთ ის რიცხვი რომელიც არ მეორდება.int singleNumber(int[] nums)
+	
+	public int singleNumber(int[] nums) {
+	    int uniqueNum = 0;
+	    for (int num : nums) {
+	        uniqueNum ^= num;
+	    }
+	    return uniqueNum;
+	}
+
+}
