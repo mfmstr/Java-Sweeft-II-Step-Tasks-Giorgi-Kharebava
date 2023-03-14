@@ -1,0 +1,52 @@
+package javasweeftsecondsteptasks.tasks;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class Third {
+
+	/* პრობლემა: 
+	 მოცემულია მასივი, რომელიც შედგება მთელი რიცხვებისგან. დაწერეთ ფუნქცია რომელსაც გადაეცემა ეს მასივი და აბრუნებს 
+	 მინიმალურ მთელ რიცხვს, რომელიც 0-ზე მეტია და ამ მასივში არ შედის.
+	 Int notContains(Int[] array);
+	*/
+	
+	/* გადაწყვეტა: 
+	 მინიმალური მთელი რიცხვი რომელიც მეტია 0-ზე არის 1. შესაბამისად ჩვენ უნდა დავიწყოთ შემოწმება 1-იანი ინტ ტიპის
+	 რიცხვით და გავზარდოთ იქამდე სანამ ეს რიცხვი იქნება მასივის წევრი. როდესაც არ დაემთხვევა მასივის წევრებს, დავაბრუნოთ.
+	
+	 ტექნიკური მხარე:
+	 
+	 მასივის წევრები გადავიტანოთ HashSet-ში, რადგან დავტოვოთ მხოლოდ უნიკალური რიცხვები, შემდეგ კი .contains()-ს
+	 მეთოდით, while loop-ის გამოყენებით ზემოთ ხსენებული 0-ზე მეტი მინიმალური რიცხვი(1), ვზარდოთ იქამდე, ვიდრე
+	 სასურველ შედეგს არ მივიღებთ. 
+	*/
+	
+	public static int notContains(int[] array) {
+		
+		
+		// განვსაზღვრეთ HashSet
+		Set<Integer> set = new HashSet<>();
+		
+		for(int number: array) {
+			set.add(number);
+		}
+		
+		int min = 1;
+		while(set.contains(min)) {
+			min++;
+		}
+		
+		return min;
+		
+	}
+	
+	public static void main(String[] args) {
+		
+		int[] nums = {1, 3, 4, 5};
+		
+		System.out.println(notContains(nums));
+		
+	}
+	
+}
