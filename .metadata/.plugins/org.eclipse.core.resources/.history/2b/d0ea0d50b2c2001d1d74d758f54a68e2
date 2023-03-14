@@ -1,0 +1,80 @@
+package javasweeftsecondsteptasks.tasks;
+import java.util.HashMap;
+import java.util.Map;
+
+public class MyStructure<K, V> {
+	
+	/* პრობლება:
+	დაწერეთ საკუთარი მონაცემთა სტრუქტურა, რომელიც საშუალებას მოგვცემს O(1) დროში წავშალოთ ელემენტი.
+	*/
+	
+	/* გადაწყვეტა:
+	უნდა ავირჩიოთ ისეთი მონაცემთა სტრუქტურა, რომელიც საშუალებას მოგვცემს O(1) დროში მონაცემთა წაშლის.
+	Doubly Linked List ამის საშუალებას იძლევა, რადგან node-ს გააჩნია წინა და შემდეგი node-ების რეფერენსები.
+	ავიღე HashMap, რომ შევინახო key-ები და node-ები, რადგან HashMap იძლევა O(1) დროში მოძებნის საშუალებას, რაც შემდგომ
+	წაშლის პროცესში გამოგვადგება.
+	*/
+	
+	// განვსაზღვროთ მაპი, რომელშიც მოვათავსებთ key-ს და node-ს;
+	// ასევე განვსაზღვროთ head და tail node ტიპის ობიექტები, რომლებიც წარმოადგენენ დაკავშირებული სიის პირველ და ბოლო node-ებს.
+    private Map<K, Node<K, V>> map;
+    private Node<K, V> head;
+    private Node<K, V> tail;
+    
+    // განვუსაზღვროთ კონსტრუქტორი, რომელიც შექმნის MyStructure ობიექტის შექმნისას მოცემულ ველებს და საწყის მნიშვნელობას მიანიჭებს null-ს, რადგან შექმნისას ცარიელი იქნება.
+    public MyStructure() {
+        this.map = new HashMap<>();
+        this.head = null;
+        this.tail = null;
+    }
+    
+    // tail.next=node
+    //    tail node
+    
+    public void put(K key, V value) {
+        Node<K, V> node = new Node<>(key, value);
+        if (head == null) {
+            head = node;
+            tail = node;
+        } else {
+            tail.next = node;
+            node.prev = tail;
+            tail = node;
+        }
+        map.put(key, node);
+    }
+    
+    public void remove(K key) {
+        Node<K, V> node = map.get(key);
+        if (node == null) {
+            return;
+        }
+        if (node == head) {
+            head = head.next;
+        } else {
+            node.prev.next = node.next;
+        }
+        if (node == tail) {
+            tail = tail.prev;
+        } else {
+            node.next.prev = node.prev;
+        }
+        map.remove(key);
+    }
+    
+    private static class Node<K, V> {
+        private K key;
+        private V value;
+        private Node<K, V> prev;
+        private Node<K, V> next;
+        
+        public Node(K key, V value) {
+            this.key = key;
+            this.value = value;
+            this.prev = null;
+            this.next = null;
+        }
+    }
+}
+
+	

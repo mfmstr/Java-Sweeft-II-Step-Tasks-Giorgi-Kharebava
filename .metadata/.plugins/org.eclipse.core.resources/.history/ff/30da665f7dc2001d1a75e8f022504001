@@ -1,0 +1,13 @@
+package javasweeftsecondsteptasks.tasks;
+
+public class Sixth {
+	
+	/* პრობლება:
+	დაწერეთ საკუთარი მონაცემთა სტრუქტურა, რომელიც საშუალებას მოგვცემს O(1) დროში წავშალოთ ელემენტი.
+	*/
+	
+	/* გადაწყვეტა:
+	doubly linked list
+	*/
+
+}

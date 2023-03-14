@@ -1,0 +1,118 @@
+package javasweeftsecondsteptasks.tasks;
+import java.util.HashMap;
+import java.util.Map;
+
+public class MyStructure<K, V> {
+	
+	/* პრობლება:
+	დაწერეთ საკუთარი მონაცემთა სტრუქტურა, რომელიც საშუალებას მოგვცემს O(1) დროში წავშალოთ ელემენტი.
+	*/
+	
+	/* გადაწყვეტა:
+	უნდა ავირჩიოთ ისეთი მონაცემთა სტრუქტურა, რომელიც საშუალებას მოგვცემს O(1) დროში მონაცემთა წაშლის.
+	Doubly Linked List ამის საშუალებას იძლევა, რადგან node-ს გააჩნია წინა და შემდეგი node-ების რეფერენსები.
+	ავიღე HashMap, რომ შევინახო key-ები და node-ები, რადგან HashMap იძლევა O(1) დროში მოძებნის საშუალებას, რაც შემდგომ
+	წაშლის პროცესში გამოგვადგება.
+	*/
+	
+	// განვსაზღვროთ ჩადგმული კლასი, რომელიც წარმოადგენს ზემოთ ხსენებულ the doubly linked list-ს
+	// K ტიპი, რომელიც შეინახავს key-ს, V-მნიშვნელობის ტიპი.
+	// prev და next node-ები წარმოადგენენ წინა და შემდეგი node-ების რეფერენსებს.
+	private static class Node<K, V> {
+        private K key;
+        private V value;
+        private Node<K, V> prev;
+        private Node<K, V> next;
+        
+        public Node(K key, V value) {
+            this.key = key;
+            this.value = value;
+            this.prev = null;
+            this.next = null;
+        }
+    }
+	
+	// განვსაზღვროთ მაპი, რომელშიც მოვათავსებთ key-ს და node-ს;
+	// ასევე განვსაზღვროთ head და tail node ტიპის ობიექტები, რომლებიც წარმოადგენენ დაკავშირებული სიის პირველ და ბოლო node-ებს.
+    private Map<K, Node<K, V>> map;
+    private Node<K, V> head;
+    private Node<K, V> tail;
+    
+    // განვუსაზღვროთ კონსტრუქტორი, რომელიც შექმნის MyStructure ობიექტის შექმნისას მოცემულ ველებს და საწყის მნიშვნელობას მიანიჭებს null-ს, რადგან შექმნისას ცარიელი იქნება.
+    public MyStructure() {
+        this.map = new HashMap<>();
+        this.head = null;
+        this.tail = null;
+    }
+    
+    // ვამატებთ put მეთოდს
+    public void put(K key, V value) {
+        // ვქმნით ახალ node ობიექტს, გადმოცემული key-value-ს მიხედვით.
+    	
+    	Node<K, V> node = new Node<>(key, value);
+    	
+    	// ვამოწმებთ თუ Doubly Linked List ცარიელია, მაშინ head-იც და tail-იც ამჟამინდელ node-ზე მიუთითებენ, რადგან მხოლოდ 1 ელემენტი გვაქვს.
+    	if (head == null) {
+            head = node;
+            tail = node;
+        } else { // თუ ცარიელი არ არის
+            tail.next = node; // ახლანდელი tail-ის next-ს ვანიჭებთ ახალ node-ს
+            node.prev = tail; // node-ს წინა მიმთითებელს ვანიჭებთ ახლანდელ კუდს(შეცვლამდელს)
+            tail = node; // საბოლოოდ კი კუდში ვინახავთ ბოლოს დამატებული node-ს.
+        }
+    	
+    	// key-ს და ბოლოს დამატებულ node-ს ვინახავთ map-ში.
+        map.put(key, node);
+    }
+    
+    // ვამატებთ წაშლის მეთოდს, რომელსაც გადაეცემა key პარამეტრი.
+    public void remove(K key) {
+        Node<K, V> node = map.get(key);
+        
+        // ვამოწმებთ თუ შეიცავს map მოცემულ key-ს
+        if (node == null) {
+            return;
+        }
+        if (node == head) {// თუ მითითებული node საწყისია, მაშინ head გახდეს მისი შემდეგი წევრი.
+            head = head.next;
+        } else {// სხვა შემთხვევაში წინა node-ს prev მიმთითებელი უნდა აღვადგინოთ ახლანდელ next მიმთითებელზე
+            node.prev.next = node.next;
+        }
+        if (node == tail) {// კუდის შემთხვევაშიც იგივე, კუდი გავხადოთ მის წინ მდგომი tail
+            tail = tail.prev;
+        } else { // და მისი შემდეგის წინა მიმთითებელი გავხადოთ ახლანდელის წინა
+            node.next.prev = node.prev;
+        }
+        // ვშლით შესაბამის ობიექტს
+        map.remove(key);
+    
+     // კოდი იმუშავებს O(1) დროში, რადგან როდესაც node იშლება სიიდან, ჩვენ გვჭირდება მხოლოდ წინა და შემდეგი მიმთითებლების მნიშვნელობების შეცვლა.
+     // node-ს პოვნა კი HashMap-ში key-ს დახმარებით ხდება ასევე O(1) დროში.
+    
+    }
+    
+    @Override
+	public String toString() {
+		return "MyStructure [map=" + map + ", head=" + head + ", tail=" + tail + "]";
+	}
+
+	public static void main(String[] args) {
+    	
+    	MyStructure<String, Integer> ms = new MyStructure<>();
+    	
+    	ms.put("a", 1);
+    	ms.put("b", 2);
+    	ms.put("c", 3);
+    	ms.put("d", 4);
+    	
+    	System.out.println(ms);
+    	
+    	ms.remove(a);
+    	
+    	System.out.println(ms);
+    	
+    }
+    
+}
+
+	
