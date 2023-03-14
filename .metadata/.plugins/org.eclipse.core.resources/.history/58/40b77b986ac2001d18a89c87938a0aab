@@ -15,7 +15,7 @@ public class Fourth {
 	*/
 
 	// main მეთოდში დატესტვისას addTwoBinaryStrings მეთოდი იყო სტატიკური
-	public String addTwoBinaryStrings(String a, String b) {
+	public static String addTwoBinaryStrings(String a, String b) {
 		
 		// შეკრება უნდა დავიწყოთ ბოლოდან, მიღებული შედეგები კი გადავიტანოთ ახალ სტრინგში, ამისათვის გამოვიყენე StringBuilder;
 		StringBuilder result = new StringBuilder();
